@@ -21,40 +21,40 @@ $fieldsLogin = array(
 	'check' => ''
 	),    												
 );
-// $mydoc = new FormsDoc('test', $fieldsLogin);
+$mydoc = new FormsDoc('test', $fieldsLogin);
 
 /*===============================
 fields register
 ===============================*/
 $fieldsRegister = array(
-    'Name'	=> array(
-        'name' => 'Naam',
-        'type' => 'text', 		
-        'label'=> 'Name:',
-        'placeholder' => 'Enter your name',
-	'check' => ''
-	),			   							
-	'email' 	=> array(
-        'name' => 'email',
-        'type' => 'email',
-        'label'=> 'Emailadres:',
-        'placeholder' => 'Enter your email address',
-        'check' => 'authenticateUser:password'
-	),
-	'password'	=> array(
-        'name' => 'password',
-        'type' => 'text', 		
-        'label'=> 'Password1:',
-        'placeholder' => 'Enter your password',
-	'check' => ''
-	),
-    'password2'	=> array(
-        'name' => 'password2',
-        'type' => 'text', 		
-        'label'=> 'Password2:',
-        'placeholder' => 'Verify your password',
-        'check' => ''
-    )  														
+        'Name'	=> array(
+                'name' => 'Naam',
+                'type' => 'text', 		
+                'label'=> 'Name:',
+                'placeholder' => 'Enter your name',
+                'check' => ''
+                ),			   							
+                'email' 	=> array(
+                'name' => 'email',
+                'type' => 'email',
+                'label'=> 'Emailadres:',
+                'placeholder' => 'Enter your email address',
+                'check' => 'authenticateUser:password'
+                ),
+                'password'	=> array(
+                'name' => 'password',
+                'type' => 'text', 		
+                'label'=> 'Password1:',
+                'placeholder' => 'Enter your password',
+                'check' => ''
+                ),
+            'password2'	=> array(
+                'name' => 'password2',
+                'type' => 'text', 		
+                'label'=> 'Password2:',
+                'placeholder' => 'Verify your password',
+                'check' => ''
+            )  														
 );
 // $mydoc = new FormsDoc('test', $fieldsRegister);
 
@@ -125,9 +125,7 @@ $fieldsContact = array(
                 'check' => ''
 	),     			   												
 );
-$mydoc = new FormsDoc('test', $fieldsContact);
-
-
+// $mydoc = new FormsDoc('contact', $fieldsContact);
 $mydoc->show();
 
 ?>

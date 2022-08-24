@@ -55,7 +55,7 @@ class HtmlDoc
         // if ($this->author) 
         //     echo '<meta name="author" content="'.$this->author.'" />'.PHP_EOL;
         // if ($this->stylesheet) 
-            echo '<link href="../css/styles.css" rel="stylesheet">'.PHP_EOL; 
+            echo '<link href="./css/styles.css" rel="stylesheet">'.PHP_EOL; 
     }
     
     protected function showBodyContent() 

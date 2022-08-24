@@ -84,7 +84,15 @@ public function showFields(){
                 echo 
                     '</select>
                     </div>';
-                break;           
+                break;
+            
+            default:
+                echo
+                '<div>
+                <label for="'.$fieldname['name'].'">'.$fieldname['label'].'</label>
+                <input type="'.$fieldname['type'].'" name="'.$fieldname['name'].'" placeholder="'.$fieldname['placeholder'].'" value="" >
+                </div>';
+        break;
         }
     } 
     echo'</pre>';    

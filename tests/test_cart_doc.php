@@ -1,6 +1,6 @@
 <?php
 
-require_once "../views/ProductDoc.php";
+require_once "../views/CartDoc.php";
 $products = array
     (			   							
     'unicorn' 	=> array
@@ -31,6 +31,6 @@ $products = array
         'details' => 'Schitterende tekening van de family'
 	),													
     );
-$mydoc = new ProductDoc('TEST',$products);
+$mydoc = new CartDoc('TEST',$products);
 $mydoc->show();
 ?>

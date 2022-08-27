@@ -7,7 +7,7 @@ de classen die hiervan overerven gemeenschappelijk hebben.
 */
 
 require_once "BasicDoc.php";
-class ProductDoc extends BasicDoc
+class CartDoc extends BasicDoc
 {
     protected $fieldinfo;
     public function __construct(string $title, array $products)
@@ -40,32 +40,33 @@ class ProductDoc extends BasicDoc
 
     protected function showProducts()
     {
-        // var_dump($this->products);
-        foreach ($this->products as $product)
-        {        
+        foreach($this->products as $product)
+        {
+        var_dump($this->products);           
         echo'
             <div class = "product">
                 <ul>
-                    <a href="index.php?page=detail&id='
-                    .$product['id']
-                    .'">
                     <li><img src="/opdracht_3.1_opzet/images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
                     <li>'.$product['name']. '</li>
                     <li>€'.$product['price'].'</li>
                     <li>Vooraad:'.$product['stock'].'</li>
-                    </a>';
-                    /*<li>;
+                    <li>Beschrijving:'.$product['details'].'</li>    
+                    <li>';
+                    /*
                     if(checkSession()){
-                    echo '<button type="hidden" name= "id"value="'.$product['id'].'">Klik voor details</button>';
+                        require_once('showForm.php');
+                        openForm('detail','');
+                        echo '<input type = "hidden" name="id"value ="'.$product['id'].'">';
+                        closeForm("Voeg toe aan winkelwagen");                    
+                        // echo '<button type="submit" name= "id" value="'.$product['id'].'">Voeg toe aan winkelwagen</button>';
                     }else{
-                    echo '<a href="index.php?page=login">Log in om te bestellen</a>';
-                    };
-                    echo '</li> 
-                    */                              
-        echo'
-            </ul>     
+                        echo '<a href="index.php?page=login">Log in om te bestellen</a>';
+                    };*/
+                    echo '</li>                        
+                </ul>     
             </div>';
+    
         }
     }
-    
+        
 }

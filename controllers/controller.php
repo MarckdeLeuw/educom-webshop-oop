@@ -8,25 +8,49 @@ class Controller
     public function handleRequest()
     {
         session_start();
-        $this-> getRequestedPage();
+        $this-> getRequest();
+        // print_r($this->request);
+        var_dump($this->request);
         $this-> validateRequest();
+        // print_r($this->response);
         $this->showResponsePage();//geen $data?
 
     }
     
-    private function getRequestedPage()
+    private function getRequest()
     {
-        $posted = ($_SERVER['REQUEST_METHOD']==='POST');
+        $posted = ($_SERVER['REQUEST_METHOD']==='POST');//start pagina niet posted dus false
         $this->request = 
             [
                 'posted' => $posted,
-                'page'     => $this->getRequestVar('page', $posted, 'home')    
+                'page'     => $this->getRequestVar('page', $posted, 'home')//hier zet je default    
             ];
     }
+
+    function getRequestVar(string $key, bool $frompost, $default="", bool $asnumber=FALSE)
+    {
+        var_dump($key);//'page'
+        var_dump($frompost);//'false'
+        var_dump($default);//'home'
+
+        $filter = $asnumber ? FILTER_SANITIZE_NUMBER_FLOAT : /*FILTER_DEFAULT*/FILTER_SANITIZE_STRING; //hier wordt een functie aangeroepen die je niet meer mag gebruiken?
+        $result = filter_input(($frompost ? INPUT_POST : INPUT_GET), $key, $filter);
+        // (if $frompost is true, then input_post else input_get) input type die gechecked wordt
+        // variabele die gechecked wordt, in dit geval de page
+        // filter die toegepast wordt.
+        // uitkomsten zijn de waarde bij succes, false on failure, en null als niet gezet
+        var_dump($result);// NULL
+        return ($result===/*FALSE*/NULL) ? $default : $result; 
+       
+        // ML moet false niet null zijn??
+       
+        // in dit geval is $result null dus niet false en geeft hij de result terug? je verwacht een pagina?
+    }   
     
     function validateRequest()
     {
         $this->response = $this->request; // getoond == gevraagd
+        // var_dump($this->response);
         if ($this->request['posted'])
         {
             switch ($this->request['page'])
@@ -48,7 +72,7 @@ class Controller
     
     function showResponsePage() //($data)
     {
-        var_dump($this->response['page']);
+        // var_dump($this->response['page']);
         switch ($this->response['page'])        
         {
             case 'home':
@@ -103,12 +127,26 @@ class Controller
         }
     }
     
-    function getRequestVar(string $key, bool $frompost, $default="", bool $asnumber=FALSE)
-    {
-        $filter = $asnumber ? FILTER_SANITIZE_NUMBER_FLOAT : FILTER_SANITIZE_STRING;
-        $result = filter_input(($frompost ? INPUT_POST : INPUT_GET), $key, $filter);
-        return ($result===FALSE) ? $default : $result;
-    }
-      
-}   
+    
+    // function getRequestVar(string $key, bool $frompost, $default="", bool $asnumber=FALSE)//laatste overbodig?
+    // {
+    //     var_dump($key);
+    //     var_dump($frompost);
+    //     var_dump($default);
+    //     $filter = $asnumber ? FILTER_SANITIZE_NUMBER_FLOAT : FILTER_SANITIZE_STRING;//deprecitated??
+    //     // $result = filter_input(($frompost ? INPUT_POST : INPUT_GET), $key, $filter);
+    //     $result = [($frompost ? INPUT_POST : INPUT_GET), $key];
+    //     return ($result===FALSE) ? $default : $result;
+    // }
+    
+    // private function getRequestVar($page, $posted, $default="")
+    // {   
+    //     var_dump($posted);     
+    //     $result = ($posted ? INPUT_POST : INPUT_GET);
+    //     // if $posted is true set result post, if $posted is false set result get
+    //     // var_dump($result);        
+    //     return ($posted===FALSE) ? $default : $result; 
+    //     // if 
+    // }          
+}
 ?>

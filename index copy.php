@@ -1,44 +1,37 @@
 <?php
-require_once "./controllers/controller.php";
-$webshop = new Controller;
-$webshop -> handleRequest();
+session_start();
+$data = getRequestedPage();
+var_dump($data);
+// $result = processRequest($page);
+showResponsePage($data);
 
-/*=========================================================
-    // Onderstaand verhuist allemaal naar de controller
-
-    session_start();
-    $data = getRequestedPage();
-    var_dump($data);
-    // $result = processRequest($page);
-    showResponsePage($data);
-
-    function getRequestedPage() 
-    {     
-        $requested_type = $_SERVER['REQUEST_METHOD']; 
-        if ($requested_type == 'POST') 
-        { 
-            $requested_page = getPostVar('page','home'); 
-        } 
-        else 
-        { 
-            $requested_page = getUrlVar('page','home'); 
-        } 
-        return $requested_page; 
-    }
-
-    function getArrayVal($array, $key, $default='') 
+function getRequestedPage() 
+{     
+    $requested_type = $_SERVER['REQUEST_METHOD']; 
+    if ($requested_type == 'POST') 
     { 
-        return isset($array[$key]) ? $array[$key] : $default; 
+        $requested_page = getPostVar('page','home'); 
     } 
-    function getPostVar($key, $default='') 
+    else 
     { 
-        return getArrayVal($_GET, $key, $default);
+        $requested_page = getUrlVar('page','home'); 
     } 
-    function getUrlVar($key, $default='') 
-    { 
-        return getArrayVal($_GET, $key, $default);
-    }
-===========================================*/
+    return $requested_page; 
+}
+
+function getArrayVal($array, $key, $default='') 
+{ 
+    return isset($array[$key]) ? $array[$key] : $default; 
+} 
+function getPostVar($key, $default='') 
+{ 
+       return getArrayVal($_GET, $key, $default);
+} 
+function getUrlVar($key, $default='') 
+{ 
+    return getArrayVal($_GET, $key, $default);
+}
+
 function processRequest($page)
 {
 
@@ -48,8 +41,6 @@ input is $data
 Dit is een array met de voorwaarden die  nodig zijn om te pagina te tonen
 
 */
-/*
-============================================
 function showResponsePage($data)
 {
     switch($data)
@@ -87,25 +78,23 @@ function showResponsePage($data)
             $login = new FormsDoc($data,$fieldsLogin);
             $login->show();
         break;
-==============================================================
-*/
         // ==================================================================
         
         /*
-            case 'webshop, detail, cart':
-                require_once "./views/ProductDoc.php";
-                require_once "./models/webshop_info.php";
-                $fieldsWebshop=getWebshopFields();
-                $webshop = new FormsDoc($data,$fieldsWebshop);
-                $contact->show();
-            break;
+        case 'webshop, detail, cart':
+            require_once "./views/ProductDoc.php";
+            require_once "./models/webshop_info.php";
+            $fieldsWebshop=getWebshopFields();
+            $webshop = new FormsDoc($data,$fieldsWebshop);
+            $contact->show();
+        break;
         */
         
         // ============================================================
-//         default:
-//         echo 'No process request';
-//     }
+        default:
+        echo 'No process request';
+    }
 
-// }
+}
 
 ?>

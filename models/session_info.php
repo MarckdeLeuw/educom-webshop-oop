@@ -1,16 +1,20 @@
 <?php
-
-require_once "../views/ProductDoc.php";
-require_once "../models/products_info.php";
-$productModel = new ProductsModel();
-$productsModel = $productModel->getProducts();
-// var_dump($productsModel);
-$id=2;
-var_dump($productsModel[$id]);
 /*
-$products = array
-    (			   							
-    'unicorn' 	=> array
+userId          =1
+userName        =Marck    
+cart_products   =
+        array   id      1
+                nr      4
+        array   id      2        
+                nr      1
+
+*/
+class SessionModel
+{
+    public function getProducts() : array
+    {
+    return	array(		   							
+    1 	=> array
     (
         'id' => 1,
         'name' => 'unicorn',
@@ -18,17 +22,17 @@ $products = array
         'stock' => '100',
         'picture' => 'unicorn',
         'details' => 'Mooie tekening van eenhoorn met regenboog'
-	),
-    'draak' 	=> array
+    ),
+    2 	=> array
     (
         'id' => 2,
-        'name' => 'draa',
+        'name' => 'draak',
         'price'=> '29.99',
         'stock' => '200',
         'picture' => 'draak',
         'details' => 'Prachtige tekening van een draak'
-	),
-    'family' 	=> array
+    ),
+    3 	=> array
     (
         'id' => 3,
         'name' => 'family',
@@ -36,10 +40,8 @@ $products = array
         'stock' => '56',
         'picture' => 'family',
         'details' => 'Schitterende tekening van de family'
-	),													
+    ),													
     );
-*/
-
-$mydoc = new ProductDoc('TEST',$productsModel);
-$mydoc->show();
+    }
+}
 ?>

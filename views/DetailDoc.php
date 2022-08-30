@@ -38,7 +38,7 @@ class DetailDoc extends BasicDoc
         echo '</div>'.PHP_EOL;
     }
 
-    protected function showProducts()
+    protected function showProductsOld()
     {
         foreach($this->product as $product)
         {
@@ -68,5 +68,32 @@ class DetailDoc extends BasicDoc
     
         }
     }
-        
+    
+    protected function showProducts()
+    {        
+        $product = $this->product;        
+        // var_dump($product);           
+        echo'
+            <div class = "product">
+                <ul>
+                    <li><img src="/opdracht_3.1_opzet/images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
+                    <li>'.$product['name']. '</li>
+                    <li>€'.$product['price'].'</li>
+                    <li>Vooraad:'.$product['stock'].'</li>
+                    <li>Beschrijving:'.$product['details'].'</li>    
+                    <li>';
+                    /*
+                    if(checkSession()){
+                        require_once('showForm.php');
+                        openForm('detail','');
+                        echo '<input type = "hidden" name="id"value ="'.$product['id'].'">';
+                        closeForm("Voeg toe aan winkelwagen");                    
+                        // echo '<button type="submit" name= "id" value="'.$product['id'].'">Voeg toe aan winkelwagen</button>';
+                    }else{
+                        echo '<a href="index.php?page=login">Log in om te bestellen</a>';
+                    };*/
+                    echo '</li>                        
+                </ul>     
+            </div>';  
+    }
 }

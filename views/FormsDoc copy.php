@@ -19,12 +19,12 @@ class FormsDoc extends BasicDoc // let op abstract!
         // $this->fieldinfo = $fieldinfo; 
         $this->fieldinfo = $data['fields']; 
         $this->submit_caption = $data['submit_caption'];
-        if (isset($data['postresult']))
-            {
-                $this->postresult = $data['postresult'];          
-            }else{
-                $this->postresult=[];
-            }      
+        // if (isset($data['postresult']))
+        //     {
+        //         $this->postresult = $data['postresult'];          
+        //     }else{
+        //         $this->postresult=[];
+        //     }      
 
 
         

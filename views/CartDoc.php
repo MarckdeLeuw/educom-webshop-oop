@@ -10,6 +10,12 @@ require_once "BasicDoc.php";
 class CartDoc extends BasicDoc
 {
     protected $fieldinfo;
+    // ==========================
+    // input uit sessie is product(id en aantal)
+    // per id worden de aanvullende gegevens van de producten uit de database gehaald
+    // totaal wordt berekend
+    // ======================================
+
     public function __construct(string $title, array $products)
     {
         parent::__construct($title);
@@ -23,49 +29,67 @@ class CartDoc extends BasicDoc
 //======================================================
     protected function showContent() 
     {         
-        $this->openProducts();
-        $this->showProducts();
-        $this->closeProducts();
+        $this->openTable();
+        $this->showProductsCart();
+        $this->closeTable();
+        $this->total();
+        $this->openForm();
+        $this->closeForm();
     }
 
-    protected function openProducts()
+    protected function openTable()
     {
-        echo'<div class="products">'.PHP_EOL; 
+        echo ' <table>
+        <tr>
+        <th>id</th>  
+        <th>Afbeelding</th> 
+        <th>Naam</th> 
+        <th>Prijs</th>
+        <th>Aantal</th>    
+        <th>Subtotaal</th> 
+        </tr>';
     }
-
-    protected function closeProducts()
-    {
-        echo '</div>'.PHP_EOL;
-    }
-
-    protected function showProducts()
-    {
-        foreach($this->products as $product)
-        {
-        var_dump($this->products);           
-        echo'
-            <div class = "product">
-                <ul>
-                    <li><img src="/opdracht_3.1_opzet/images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
-                    <li>'.$product['name']. '</li>
-                    <li>€'.$product['price'].'</li>
-                    <li>Vooraad:'.$product['stock'].'</li>
-                    <li>Beschrijving:'.$product['details'].'</li>    
-                    <li>';
-                    /*
-                    if(checkSession()){
-                        require_once('showForm.php');
-                        openForm('detail','');
-                        echo '<input type = "hidden" name="id"value ="'.$product['id'].'">';
-                        closeForm("Voeg toe aan winkelwagen");                    
-                        // echo '<button type="submit" name= "id" value="'.$product['id'].'">Voeg toe aan winkelwagen</button>';
-                    }else{
-                        echo '<a href="index.php?page=login">Log in om te bestellen</a>';
-                    };*/
-                    echo '</li>                        
-                </ul>     
-            </div>';
     
+    protected function closeTable()
+    {
+        echo '</table>'.PHP_EOL;
+    }
+
+    protected function total()
+    {
+        echo 'Totaalprijs is €'/*.totalPrice()*/;
+    }
+
+    protected function openForm($method="POST")
+    {
+    // $submit_caption=$this->submit_caption;
+	echo '<main><form action="index.php" method="'.$method.'" >'.PHP_EOL
+    .'		<input type="hidden" name="page" value="page" />'.PHP_EOL;
+    // ML: let op value moet nog afhankelijk gemaakt worden van de de pagina, action ook anders?
+    // .'		<input type="hidden" name="page" value="'.$page.'" />'.PHP_EOL;
+    }
+
+    protected function closeForm($submit_caption="Afrekenen")
+    {
+        echo '		<input  type="submit" value="'.$submit_caption.'"></input>'.PHP_EOL
+            .'	</form></main>'.PHP_EOL;
+    }
+
+
+    protected function showProductsCart()
+    {
+        // foreach($this->products as $product)
+        {
+        // var_dump($this->products);           
+        echo'
+        <tr>
+            <td>id uit session</td> 
+            <td>afbeelding ahv id product</td>
+            <td>name ahv id product</td>
+            <td>prijs ahv id product</td>
+            <td>aantal uit session</td> 
+            <td>prijs*aantal producten</td>    
+        </tr>';       
         }
     }
         

@@ -1,14 +1,6 @@
 <?php
 
 require_once "../views/DetailDoc.php";
-require_once "../models/products_info.php";
-$productModel = new ProductsModel();
-$productsModel = $productModel->getProducts();
-// var_dump($productsModel);
-$id=1;
-// var_dump($productsModel[$id]);
-
-/*
 $product = array
     (			   							
     'unicorn' 	=> array
@@ -39,7 +31,6 @@ $product = array
     //     'details' => 'Schitterende tekening van de family'
 	// ),													
     );
-    */
-$mydoc = new DetailDoc('TEST',$productsModel[$id]);
+$mydoc = new DetailDoc('TEST',$product);
 $mydoc->show();
 ?>

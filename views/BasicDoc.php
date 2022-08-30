@@ -36,7 +36,7 @@ class BasicDoc extends HtmlDoc
 
     protected function showMenu()
     {
-        $menuItems = array('home', 'about','contact', 'webshop','register', 'login');
+        $menuItems = array('home', 'about','contact', 'webshop','detail','cart','register', 'login');
         $menuItemsLogin = array('home', 'about','contact','webshop','cart');        
         echo 
         '<nav class="menu"><ul >';        

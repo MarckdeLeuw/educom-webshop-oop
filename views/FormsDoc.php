@@ -16,12 +16,14 @@ class FormsDoc extends BasicDoc // let op abstract!
     public function __construct(string $title, array $data)
     {
         parent::__construct($title);
-        // $this->fieldinfo = $fieldinfo; 
+        // $this->fieldinfo = $fieldinfo;
+        $this->page=$data['page'] ;
         $this->fieldinfo = $data['fields']; 
         $this->submit_caption = $data['submit_caption'];
+        // $this->postresult=$data['postresult'];
         if (isset($data['postresult']))
             {
-                $this->postresult = $data['postresult'];          
+                $this->postresult = $data['postresult'];  //16 $postresult is niet gedeclareerd als class-variabele.         
             }else{
                 $this->postresult=[];
             }      
@@ -49,7 +51,7 @@ protected function openForm($method="POST")
 {
     // $submit_caption=$this->submit_caption;
 	echo '<main><form action="index.php" method="'.$method.'" >'.PHP_EOL
-    .'		<input type="hidden" name="page" value="page" />'.PHP_EOL;
+    .'		<input type="hidden" name="page" value="'.$this->page.'" />'.PHP_EOL;
     // ML: let op value moet nog afhankelijk gemaakt worden van de de pagina, action ook anders?
     // .'		<input type="hidden" name="page" value="'.$page.'" />'.PHP_EOL;
 }
@@ -60,23 +62,50 @@ protected function closeForm(/*$submit_caption="Verstuur"*/)
 		.'	</form></main>'.PHP_EOL;
 }
 
-public function showFields(){
-    echo'<pre>';
+protected function showFields(){//Geert 18 waarom public
+    // echo'<pre>';// Geert 17 pre - tag wil je enkel rond een schermdump voor een variabele, NIET rond je hele input!!
     // print_r($this->fieldinfo);
     // var_dump( $this->fieldinfo['salutation']['options']);
     
     // var_dump( $this->fieldinfo['salutation']['options_func']);
+    // var_dump( $this->$fieldinfo);
     
-    foreach ($this->fieldinfo as $fieldname){
-        // var_dump( $fieldname['options']);
+    foreach($this->postresult as $key=>$postedValue)
+    {
+        // var_dump($post);
+        // var_dump($this->postresult);
+        echo $key.'='. $postedValue;
+        
+    };
 
+    foreach ($this->fieldinfo as $fieldname){
+
+        if(isset($this->postresult[$fieldname['name']]))
+        {
+            $postResult=$this->postresult[$fieldname['name']];
+        }
+        else
+        { 
+            if(isset($this->postresult[$fieldname['name'].'_err']))
+            {
+                $postResult=$this->postresult[$fieldname['name'].'_err'];
+            }
+        else
+        {
+            $postResult='';
+        }
+        }     
+            
         switch($fieldname['type'])
         {
             case "text":
                 echo
                     '<div>
                     <label for="'.$fieldname['name'].'">'.$fieldname['label'].'</label>
-                    <input type="'.$fieldname['type'].'" name="'.$fieldname['name'].'" placeholder="'.$fieldname['placeholder'].'" value="" >
+                    <input type="'.$fieldname['type'].'" name="'.$fieldname['name'].'" placeholder="'
+                    .$fieldname['placeholder'].
+                    // .$this->postresult['fieldname']['name'].
+                    '" value="'.$postResult.'" >
                     </div>';
                 break;
             
@@ -105,12 +134,13 @@ public function showFields(){
                 echo
                 '<div>
                 <label for="'.$fieldname['name'].'">'.$fieldname['label'].'</label>
-                <input type="'.$fieldname['type'].'" name="'.$fieldname['name'].'" placeholder="'.$fieldname['placeholder'].'" value="" >
+                <input type="'.$fieldname['type'].'" name="'.$fieldname['name'].'" placeholder="'.$fieldname['placeholder'].
+                '" value="'.$postResult.'" >
                 </div>';
         break;
         }
     } 
-    echo'</pre>';    
+    // echo'</pre>';    
 }
 }
 

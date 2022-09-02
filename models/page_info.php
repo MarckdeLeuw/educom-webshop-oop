@@ -6,8 +6,20 @@ class PageInfo
         $data =[];
         switch($page)
         {
+        case 'home':
+        $data = array
+            (
+                'page' => 'home',
+                'title' => 'home'
+            );
+        case 'about':
+        $data = array
+            (
+                'page' => 'about',
+                'title' => 'about'
+            );
         case 'contact':
-        // $data['page']; 'contact';
+        $data['page']= 'contact';
         $data['submit_caption']= 'Versturen';       
         $data['fields']=array
             (
@@ -70,6 +82,7 @@ class PageInfo
             );
             break;
             case 'register':
+                $data['page']='register';
                 $data['submit_caption']= 'Registreer'; 
                 $data['fields']=array
             (
@@ -104,6 +117,7 @@ class PageInfo
             );
             break;
             case 'login':
+                $data['page']='login';
                 $data['submit_caption']= 'Login'; 
                 $data['fields']=array
             (

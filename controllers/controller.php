@@ -21,11 +21,13 @@ class Controller
     private function getRequest()
     {
         $posted = ($_SERVER['REQUEST_METHOD']==='POST');//start pagina niet posted dus false
+        // var_dump($posted);
         $this->request = 
             [
                 'posted' => $posted,
                 'page'     => $this->getRequestVar('page', $posted, 'home')//hier zet je default    
             ];
+        var_dump($this->request);
     }
 
     function getRequestVar(string $key, bool $frompost, $default="", bool $asnumber=FALSE)
@@ -33,8 +35,9 @@ class Controller
         // var_dump($key);//'page'
         // var_dump($frompost);//'false'
         // var_dump($default);//'home'
-
-        $filter = $asnumber ? FILTER_SANITIZE_NUMBER_FLOAT : /*FILTER_DEFAULT*/FILTER_SANITIZE_STRING; //hier wordt een functie aangeroepen die je niet meer mag gebruiken?
+        // var_dump(INPUT_GET);
+        $filter = $asnumber ? FILTER_SANITIZE_NUMBER_FLOAT : FILTER_DEFAULT/*FILTER_SANITIZE_STRING*/; //hier wordt een functie aangeroepen die je niet meer mag gebruiken?
+        // $filter = FILTER_DEFAULT;
         $result = filter_input(($frompost ? INPUT_POST : INPUT_GET), $key, $filter);
         // (if $frompost is true, then input_post else input_get) input type die gechecked wordt
         // variabele die gechecked wordt, in dit geval de page
@@ -42,9 +45,23 @@ class Controller
         // uitkomsten zijn de waarde bij succes, false on failure, en null als niet gezet
         
         // var_dump($result);// NULL
-        return ($result===NULL) ? $default : $result; 
-// ML test uitbreiden
+        // var_dump($filter);
 
+        // return ($result===NULL) ? $default : $result; 
+// ML test uitbreiden
+        if ($result===NULL)
+        {
+            return $default;
+        }else
+        {
+            if ($result===FALSE)
+            {
+                return $default;
+            }else
+            {
+                return $result;
+            }
+        }
         // return ($result===FALSE) ? $default : $result;      
         // ML moet false niet null zijn??       
         // in dit geval is $result null dus niet false en geeft hij de result terug? je verwacht een pagina?
@@ -53,27 +70,31 @@ class Controller
     function validateRequest()
     {
         $this->response = $this->request; // getoond == gevraagd
-        // var_dump($this->response);
+        // var_dump($this->request);
         // posted=true
         // page = page
-
+        if ($this->request['posted'])
+        {
         require_once "./models/page_info.php";
         require_once "./models/validate_model.php";
-
+        // var_dump($this->request['page']);
         $dataByPage = new PageInfo();
         $this->response['data']=$dataByPage->getData($this->response['page']);
-        // var_dump($this->response['data']['fields']);
-        if(isset($this->response['data']['fields']))
+        // var_dump($this->response['data']);
+        if(isset($this->response['data']['fields']))//Geert14 zie opmerking Geert alleen bij POST
         {
-            $fields=$this->response['data']['fields'];
-            // echo' data fields zijn gezet';
+            // $fields=$this->response['data']['fields'];
+            echo' data fields zijn gezet';
             $validateForm = new ValidateForm();
-            $this->response['data']['postresult'] = $validateForm->checkFields($fields);
-            // var_dump($checkFields);     
+            $this->response['data']['postresult'] = $validateForm->checkFields($this->response['data']['fields']);
+            // var_dump($this->response['data']['postresult']);   
+            var_dump($this->response);    
         }
         switch($this->request['page'])
         {
-            case'contact':
+            case 'contact':
+            case 'register':
+            case 'login':
                 // var_dump($this->response['data']['postresult']['ok']);
                 if( $this->response['data']['postresult']['ok']==true)
                 {
@@ -104,6 +125,8 @@ class Controller
             //     // zie uitleg Request-Response overview
             //     }
             // }
+    
+        }
     }
     
     function showResponsePage() //($data)
@@ -133,19 +156,22 @@ class Controller
 
                 if (isset($this->response['data']['postresult']))
                 {
+                    $form = new FormsDoc($page,$this->response['data']);
+                    $form->show(); 
                     echo 'checkfields zijn gezet deze waarden invullen';
                 }
                 else
                 {
-                    // $dataPage = new PageInfo();           
-                    // $dataForm=$dataPage->getData($page);//geeft array
-                    // $form = new FormsDoc($page,$dataForm);
-                    // $form->show();
+                    $dataPage = new PageInfo();           
+                    $dataForm=$dataPage->getData($page);//geeft array
+                    $form = new FormsDoc($page,$dataForm);
+                    $form->show();
                 }
-                $dataPage = new PageInfo();           
-                $dataForm=$dataPage->getData($page);//geeft array
-                $form = new FormsDoc($page,$dataForm);
-                $form->show();              
+                // $dataPage = new PageInfo();           
+                // $dataForm=$dataPage->getData($page);//geeft array
+                // // var_dump( $dataForm);
+                // $form = new FormsDoc($page,$dataForm);
+                // $form->show();              
             break;
             case 'webshop':
                 require_once "./views/ProductDoc.php";
@@ -188,7 +214,7 @@ class Controller
             
             // ============================================================
             default:
-            echo 'No process request';            
+            // echo 'No process request';            
         }
     }
 

@@ -9,7 +9,9 @@ class ValidateForm
         // echo 'validateForm wordt aangeroepn';
         foreach ($fields as $fieldName => $fieldInfo)
         {
+            // $check = $this->checkField($fieldName, $fieldInfo);
             $check = $this->checkField($fieldName, $fieldInfo);
+            // var_dump($this->check);
             if($check['ok']===true)
                 {
                     $result[$fieldName]=$check[$fieldName];
@@ -17,10 +19,11 @@ class ValidateForm
                 else
                 {
                     $result['ok']=false;
-                    $result[$fieldName.'_error']=$check[$fieldName.'_error'];
+                    $result[$fieldName.'_err']=$check[$fieldName.'_err'];
                 }
 
         }
+        // var_dump($result);
         return $result;
     }
 
@@ -35,12 +38,17 @@ class ValidateForm
                 // $value = stripslashes($value); 
                 // $value = htmlspecialchars($value); 
                 $result[$fieldName]=$value;
-            }else
+                // $result['ok']=true;
+            }if(empty($value))
             {
-                $result[$fieldName.'_error'] = $fieldName. ' is verplicht in te vullen.';
-            }  
+                $result[$fieldName.'_err'] = $fieldName.' is verplicht in te vullen.';
+            }
+            else
+            {
+            $result['ok']=true;
+            }                   
         return $result;
-        
+        // var_dump($result);
     }
 
 

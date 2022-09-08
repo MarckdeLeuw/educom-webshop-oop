@@ -27,7 +27,7 @@ class Controller
                 'posted' => $posted,
                 'page'     => $this->getRequestVar('page', $posted, 'home')//hier zet je default    
             ];
-        var_dump($this->request);
+        // var_dump($this->request);
     }
 
     function getRequestVar(string $key, bool $frompost, $default="", bool $asnumber=FALSE)
@@ -84,24 +84,99 @@ class Controller
         if(isset($this->response['data']['fields']))//Geert14 zie opmerking Geert alleen bij POST
         {
             // $fields=$this->response['data']['fields'];
-            echo' data fields zijn gezet';
+            // echo' data fields zijn gezet';
             $validateForm = new ValidateForm();
             $this->response['data']['postresult'] = $validateForm->checkFields($this->response['data']['fields']);
             // var_dump($this->response['data']['postresult']);   
-            var_dump($this->response);    
+            // var_dump($this->response);    
         }
         switch($this->request['page'])
         {
             case 'contact':
-            case 'register':
-            case 'login':
                 // var_dump($this->response['data']['postresult']['ok']);
                 if( $this->response['data']['postresult']['ok']==true)
                 {
-                   echo 'Bedankt voor het invullen';
+                    echo 'Bedankt voor het invullen';
+                }
+                break;
+            case 'register':
+
+                $name=$this->response['data']['postresult']['name'];                
+                $email=$this->response['data']['postresult']['email'];
+                $password=$this->response['data']['postresult']['password'];
+                $password2=$this->response['data']['postresult']['password2'];
+
+                if(($this->response['data']['postresult']['ok']))
+                { 
+                    require_once "./models/crud.php";
+                    require_once "./models/user_model.php";
+                    $crud= new Crud();
+                    $userModel = new UserModel($crud);
+                    // $userModel->findUserByEmail($email);//geeft row uit database of false
+                    if($userModel->findUserByEmail($email) == false)
+                    {
+                        if($userModel->checkRegisterPasswords($password,$password2) == false)
+                        {
+                        $this->response['data']['postresult']['password_err'] = 'De door u ingevulde passwords komen niet overeen'.PHP_EOL;
+                        }else
+                        {
+                            $userModel->addUser($name,$email,$password);
+                            header('location://localhost/educom-webshop-oop/index.php?page=login');
+                        }
+                    }
+                    else
+                    {
+                        $this->response['data']['postresult']['email_err'] = 'Uw emailadres is al geregistreerd. Log <a href="index.php?page=login"> hier </a> in'.PHP_EOL;
+                    }
+                }
+                break;
+
+            case 'login':
+                // var_dump($this->response['data']['postresult']['ok']);
+                // var_dump($this->response['data']['postresult']['email']);
+                // var_dump($this->response['data']['postresult']['password']);
+
+                $email=$this->response['data']['postresult']['email'];
+                $password=$this->response['data']['postresult']['password'];
+              
+                if(($this->response['data']['postresult']['ok']))
+                {
+                    require_once "./models/crud.php";
+                    require_once "./models/user_model.php";
+                    $crud= new Crud();
+                    $userModel = new UserModel($crud);
+                    $user=$userModel->findUserByEmail($email);//geeft row uit database of false
+                    if ($user==false)
+                    {
+                        $this->response['data']['postresult']['email_err'] = ' Email niet bekend.';
+                    }
+                    else
+                    {
+                        $authenticate=$userModel->authenticateUser($user,$password);//geeft true of false
+                        if($authenticate==false)
+                        {
+                            $this->response['data']['postresult']['password_err'] = 'Voer het juiste wachtwoord in.';
+                        }
+                        else
+                        {
+                            $_SESSION['userName'] = $user[0]['naam'];
+                            $_SESSION['userid'] =  $user[0]['id']; 
+                            var_dump($_SESSION); 
+                            $this->response['page'] = 'home';                    
+                        }            
+                    }
                 }
             break;
 
+            // case 'logout':
+            //     session_destroy();
+            //     $_SESSION['userName'] = NULL;
+            //     if($_SESSION['userName']==NULL)
+            //     {
+            //         $this->response['page'] = 'home';
+            //     }
+            //     // ML, waarom werkt dit niet meer?? 
+            // break;
             // default
             // echo "No process request";
 
@@ -173,6 +248,12 @@ class Controller
                 // $form = new FormsDoc($page,$dataForm);
                 // $form->show();              
             break;
+            case 'logout':
+                session_destroy();
+                $_SESSION['userName'] = NULL;
+                if($_SESSION['userName']==NULL)
+                header('location://localhost/educom-webshop-oop/index.php?page=home');
+
             case 'webshop':
                 require_once "./views/ProductDoc.php";
                 require_once "./models/products_info.php";

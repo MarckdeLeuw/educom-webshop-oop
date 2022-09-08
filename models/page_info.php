@@ -86,12 +86,13 @@ class PageInfo
                 $data['submit_caption']= 'Registreer'; 
                 $data['fields']=array
             (
-                'Name'	=> array(
-                    'name' => 'Naam',
+                'name'	=> array(
+                    'name' => 'name',
                     'type' => 'text', 		
-                    'label'=> 'Name:',
-                    'placeholder' => 'Enter your name',
-                'check' => ''
+                    'label'=> 'Naam:',
+                    'placeholder' => 'Enter your first name',
+                    'check' => ''
+                
                 ),			   							
                 'email' 	=> array(
                     'name' => 'email',

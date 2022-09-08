@@ -53,17 +53,18 @@ class ProductDoc extends BasicDoc
                     <li>'.$product['name']. '</li>
                     <li>€'.$product['price'].'</li>
                     <li>Vooraad:'.$product['stock'].'</li>
-                    </a>';
-                    /*<li>;
-                    if(checkSession()){
-                    echo '<button type="hidden" name= "id"value="'.$product['id'].'">Klik voor details</button>';
-                    }else{
-                    echo '<a href="index.php?page=login">Log in om te bestellen</a>';
+                    </a>
+                    <li>';
+                    if(isset($_SESSION["userName"]))
+                    {
+                        echo '<button type="hidden" name= "id"value="'.$product['id'].'">Klik voor details</button>';
+                    }
+                    else
+                    {
+                        echo '<a href="index.php?page=login">Log in om te bestellen</a>';
                     };
-                    echo '</li> 
-                    */                              
-        echo'
-            </ul>     
+            echo '  </li>                                      
+                </ul>     
             </div>';
         }
     }

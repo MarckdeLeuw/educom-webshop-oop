@@ -138,6 +138,12 @@ class PageInfo
                 ),    	                
             );
             break;
+            case 'webshop':
+                $data = array
+                    (
+                        'page' => 'webshop',
+                        'title' => 'webshop'
+                    );
             default:
                 echo 'No process request';              
         }

@@ -1,4 +1,5 @@
 <?php
+// is komen te vervallen met de crud en db
 class ProductsModel
 {
     public function getProducts() : array

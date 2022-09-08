@@ -81,17 +81,29 @@ class DetailDoc extends BasicDoc
                     <li>€'.$product['price'].'</li>
                     <li>Vooraad:'.$product['stock'].'</li>
                     <li>Beschrijving:'.$product['details'].'</li>    
-                    <li>';
-                    /*
-                    if(checkSession()){
+                    <li>';                    
+                    if(isset($_SESSION["userName"]))
+                    {
+                        /*Onderstaand wil je eigenlijk met oop doen conform login/register
+
                         require_once('showForm.php');
                         openForm('detail','');
                         echo '<input type = "hidden" name="id"value ="'.$product['id'].'">';
                         closeForm("Voeg toe aan winkelwagen");                    
                         // echo '<button type="submit" name= "id" value="'.$product['id'].'">Voeg toe aan winkelwagen</button>';
-                    }else{
+                        */
+                    
+                        //of
+                    echo '<form action="index.php" method="POST" > 
+                        <input type="hidden" name="page" value="webshop" />
+                        <input type="hidden" name="id" value="'.$product['id'].'">
+                        <br><button type="submit" value="submit">Voeg toe aan winkelwagen</button><br>
+                        </form>'.PHP_EOL;
+                    }
+                    else
+                    {
                         echo '<a href="index.php?page=login">Log in om te bestellen</a>';
-                    };*/
+                    };
                     echo '</li>                        
                 </ul>     
             </div>';  

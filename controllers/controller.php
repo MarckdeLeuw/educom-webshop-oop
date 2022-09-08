@@ -256,22 +256,52 @@ class Controller
 
             case 'webshop':
                 require_once "./views/ProductDoc.php";
+                /*
+                //onderstaande 3 regels halen de productinformatie op uit een array
+                // vervangen door DB en CRUD. 
+
                 require_once "./models/products_info.php";
-                $productModel = new ProductsModel();
-                $productsModel = $productModel->getProducts();
+                $productModel = new ProductsModel();//hard code array, vervangen door database query result
+                $productsModel = $productModel->getProducts();//hardcode database
                 $products = new ProductDoc($page,$productsModel);
-                $products->show();                
+                */
+
+                // onderstaand haalt producten met crud uit db
+
+                require_once "./models/crud.php";
+                require_once "./models/product_model.php";
+                $crud= new Crud();
+                $productModel = new ProductModel($crud);
+                $productsModel=$productModel->getAllProducts();
+                $products = new ProductDoc($page,$productsModel);
+                $products->show();
             break;
+
             case 'detail':
+                // var_dump($_GET);//in principe niet met GET wreken!!
+                $id=$_GET['id'];
+                var_dump($id);                
+                // var_dump($this->request);//hier moet de id uitkomen.?
                 require_once "./views/DetailDoc.php";
+                /*
                 require_once "./models/products_info.php";//ipv database
                 $productModel = new ProductsModel();
                 $productsModel = $productModel->getProducts();
                 // var_dump($productsModel);
                 $id=2;
                 $product = new DetailDoc($page,$productsModel[$id]);
-                $product->show();                
+                $product->show();
+                */  
+                require_once "./models/crud.php";
+                require_once "./models/product_model.php";
+                $crud= new Crud();
+                $productModel = new ProductModel($crud);
+                $product=$productModel->getProductById($id);
+                // var_dump($product);
+                $productDoc = new DetailDoc($page,$product[0]);
+                $productDoc->show();
             break;
+
             case 'cart':
                 require_once "./views/CartDoc.php";
                 require_once "./models/products_info.php";

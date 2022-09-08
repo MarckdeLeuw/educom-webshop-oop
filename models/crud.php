@@ -24,6 +24,15 @@ class Crud
         return $results;
     }
 
+    public function getAllRows($sql)
+    {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        
+        $results=$stmt->fetchAll();
+        return $results;
+    }
+
     public function createRow($sql, $parameter)
     {
         $result=false;

@@ -18,6 +18,30 @@ class WebshopModel extends BaseModel
         }
 
     }
+
+    public function totalPrice()
+    {
+        if(isset($_SESSION['cart_products']))
+        {
+            // var_dump($_SESSION);
+            $totalPrice = 0;
+            $productsInCart=$_SESSION['cart_products'];
+            foreach ($productsInCart as $productInCart)
+            {
+                $product=$this->getProductById($productInCart['id']);
+                echo'id='.$productInCart['id'].'<br>';
+                echo'number='.$productInCart['number'].'<br>';
+                echo'price='.$product[0]['price'].'<br>';
+                $subTotal = $productInCart['number']*$product[0]['price'];
+                $totalPrice += $subTotal;
+            }
+            return $totalPrice;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     public function getProductById($valueId)
     {

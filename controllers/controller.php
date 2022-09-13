@@ -168,6 +168,25 @@ class Controller
                 }
             break;
 
+            case 'cart':
+                if(isset($_GET['id']))
+                {
+                    $id=$_GET['id'];
+                    require_once "./models/webshop_model.php";
+                    $crud = new Crud();
+                    $webshopModel = new WebshopModel($crud);
+                    $webshopModel->addToCart($id);
+                }
+                // print_r($_SESSION);
+                
+                // var_dump($_SESSION['cart_products'][1]);
+                // var_dump($_SESSION['cart_products'][2]);
+                // var_dump($_SESSION['cart_products'][3]);
+
+
+            break;
+
+
             // case 'detail':
             //     echo 'hello';
             //     var_dump($this->request);
@@ -309,15 +328,24 @@ class Controller
             break;
 
             case 'cart':
-                $id=$_GET['id'];
-                // var_dump($id); 
-                require_once "./views/webshop_model.php";
-                $crud = new Crud();
-                $webshopModel = new WebshopModel($crud);
-                $webhopModel->addToCart($id);
-                var_dump($_SESSION);
+                if(isset($_SESSION['cart_products']))
+                {
+                    // var_dump($_SESSION);
+                    require_once "./models/webshop_model.php";
+                    $crud = new Crud();
+                    $webshopModel = new WebshopModel($crud);
+                    $total= $webshopModel->totalPrice();
+                    var_dump($total);
+                }
+                else
+                {
+                    echo 'Nog geen items toegevoegd';
+                }
+
+                // var_dump($_SESSION['cart_products'][1]); 
+
                 /*
-                add id to session=add to cart
+                add id to session=add to cart, niet in view
                     user=id,name
                     products=id, number                
                 
@@ -325,7 +353,7 @@ class Controller
 
                 total price
 
-                write to orders
+                write to orders bij afrekenen
                 write to order details                          
                 */
                 require_once "./views/CartDoc.php";

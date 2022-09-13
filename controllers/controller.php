@@ -99,8 +99,8 @@ class Controller
                     echo 'Bedankt voor het invullen';
                 }
                 break;
-            case 'register':
 
+            case 'register':
                 $name=$this->response['data']['postresult']['name'];                
                 $email=$this->response['data']['postresult']['email'];
                 $password=$this->response['data']['postresult']['password'];
@@ -168,14 +168,10 @@ class Controller
                 }
             break;
 
-            // case 'logout':
-            //     session_destroy();
-            //     $_SESSION['userName'] = NULL;
-            //     if($_SESSION['userName']==NULL)
-            //     {
-            //         $this->response['page'] = 'home';
-            //     }
-            //     // ML, waarom werkt dit niet meer?? 
+            // case 'detail':
+            //     echo 'hello';
+            //     var_dump($this->request);
+            //     var_dump($_POST['id']);
             // break;
             // default
             // echo "No process request";
@@ -278,10 +274,19 @@ class Controller
             break;
 
             case 'detail':
+                $this->response['data']['page'] = 'detail';//Bij de post kan de waarde opgevangen worden
+                var_dump($this->response['data']['page']);
+
                 // var_dump($_GET);//in principe niet met GET wreken!!
-                $id=$_GET['id'];
-                var_dump($id);                
-                // var_dump($this->request);//hier moet de id uitkomen.?
+                if (isset ($this->response['data']['id']) )
+                {
+
+                }else{
+                    $id=$_GET['id'];
+                    var_dump($id);  
+                    $this->response['data']['id']=$id; 
+                }
+                                       // var_dump($this->request);//hier moet de id uitkomen.?
                 require_once "./views/DetailDoc.php";
                 /*
                 require_once "./models/products_info.php";//ipv database
@@ -294,15 +299,35 @@ class Controller
                 */  
                 require_once "./models/crud.php";
                 require_once "./models/product_model.php";
+               
                 $crud= new Crud();
                 $productModel = new ProductModel($crud);
-                $product=$productModel->getProductById($id);
+                $product=$productModel->getProductById($this->response['data']['id']);
                 // var_dump($product);
                 $productDoc = new DetailDoc($page,$product[0]);
                 $productDoc->show();
             break;
 
             case 'cart':
+                $id=$_GET['id'];
+                // var_dump($id); 
+                require_once "./views/webshop_model.php";
+                $crud = new Crud();
+                $webshopModel = new WebshopModel($crud);
+                $webhopModel->addToCart($id);
+                var_dump($_SESSION);
+                /*
+                add id to session=add to cart
+                    user=id,name
+                    products=id, number                
+                
+                for each id get properties (show)
+
+                total price
+
+                write to orders
+                write to order details                          
+                */
                 require_once "./views/CartDoc.php";
                 require_once "./models/products_info.php";
                 $productModel = new ProductsModel();

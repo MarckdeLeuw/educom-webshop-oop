@@ -7,7 +7,7 @@ class BaseModel
 {
     protected $crud;
 
-    public function __construct(Crud $crud)//vergelijkbaar met sting 
+    public function __construct(Crud $crud)//vergelijkbaar met string 
     {
         $this->crud=$crud;        
     }

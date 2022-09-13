@@ -5,7 +5,7 @@ class UserModel extends BaseModel
     
     public function findUserByEmail($valueEmail)
     {
-        $sql = 'SELECT * FROM users WHERE email  = ? ';
+        $sql = 'SELECT * FROM users WHERE email  = ? ';//Geert:Waarom geen named placeholders gebruiken zoals in addUser? #24
         $user=$this->crud->getRowByValue($sql,$valueEmail);
         if($user==null)
         {
@@ -18,7 +18,7 @@ class UserModel extends BaseModel
 
     public function authenticateUser($user,$password)
     {       
-        if($user[0]['wachtwoord']==$password)
+        if($user[0]['wachtwoord']==$password)//Geert:Waarom $user[0] ? #23
             {
             // echo 'password is correct';
             return $user;

@@ -53,7 +53,7 @@ class PageInfo
                         'type' => 'email',
                         'label'=> 'Emailadres:',
                         'placeholder' => 'Enter your email address',
-                        'check' => 'authenticateUser:password'
+                        // 'check' => 'authenticateUser:password'
                         ),
                 'phoneNr'	=> array(
                         'name' => 'phoneNr',
@@ -99,7 +99,7 @@ class PageInfo
                     'type' => 'email',
                     'label'=> 'Emailadres:',
                     'placeholder' => 'Enter your email address',
-                    'check' => 'authenticateUser:password'
+                    // 'check' => 'authenticateUser:password'
                 ),
                 'password'	=> array(
                     'name' => 'password',
@@ -127,7 +127,7 @@ class PageInfo
                     'type' => 'email',
                     'label'=> 'Emailadres:',
                     'placeholder' => 'Enter your email address',
-                    'check' => 'authenticateUser:password'
+                    // 'check' => 'authenticateUser:password'
                 ),
                 'password'	=> array(
                     'name' => 'password',

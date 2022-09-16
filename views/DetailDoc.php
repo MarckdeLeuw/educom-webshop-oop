@@ -13,10 +13,7 @@ class DetailDoc extends BasicDoc
     public function __construct(string $title, array $product)
     {
         parent::__construct($title);
-        $this->product = $product; 
-        
-        // $this-> title= parent::$title;      
-        // ML:deze wordt toch van de parent meegekregen, waarom hier weer?
+        $this->product = $product;         
     }
 //======================================================
 // PROTECTED METHOD OVERRIDES
@@ -38,45 +35,14 @@ class DetailDoc extends BasicDoc
         echo '</div>'.PHP_EOL;
     }
 
-    // protected function showProductsOld()
-    // {
-    //     foreach($this->product as $product)
-    //     {
-    //     var_dump($this->product);           
-    //     echo'
-    //         <div class = "product">
-    //             <ul>
-    //                 <li><img src="/opdracht_3.1_opzet/images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
-    //                 <li>'.$product['name']. '</li>
-    //                 <li>€'.$product['price'].'</li>
-    //                 <li>Vooraad:'.$product['stock'].'</li>
-    //                 <li>Beschrijving:'.$product['details'].'</li>    
-    //                 <li>';
-    //                 /*
-    //                 if(checkSession()){
-    //                     require_once('showForm.php');
-    //                     openForm('detail','');
-    //                     echo '<input type = "hidden" name="id"value ="'.$product['id'].'">';
-    //                     closeForm("Voeg toe aan winkelwagen");                    
-    //                     // echo '<button type="submit" name= "id" value="'.$product['id'].'">Voeg toe aan winkelwagen</button>';
-    //                 }else{
-    //                     echo '<a href="index.php?page=login">Log in om te bestellen</a>';
-    //                 };*/
-    //                 echo '</li>                        
-    //             </ul>     
-    //         </div>';
-    
-    //     }
-    // }
     
     protected function showProducts()
     {        
         $product = $this->product;        
-        var_dump($product);           
         echo'
             <div class = "product">
                 <ul>
-                    <li><img src="/opdracht_3.1_opzet/images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
+                    <li><img src="./images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
                     <li>'.$product['name']. '</li>
                     <li>€'.$product['price'].'</li>
                     <li>Vooraad:'.$product['stock'].'</li>
@@ -84,37 +50,6 @@ class DetailDoc extends BasicDoc
                     <li>';                    
                     if(isset($_SESSION["userName"]))
                     {
-                        /*Onderstaand wil je eigenlijk met oop doen conform login/register
-
-                        require_once('showForm.php');
-                        openForm('detail','');
-                        echo '<input type = "hidden" name="id"value ="'.$product['id'].'">';
-                        closeForm("Voeg toe aan winkelwagen");                    
-                        // echo '<button type="submit" name= "id" value="'.$product['id'].'">Voeg toe aan winkelwagen</button>';
-                        */
-                    
-                        //of
-                    // echo '
-                    //     <a href="index.php?page=cart&id='
-                    //     .$product['id']
-                    //     .'">
-                        
-                    //     <form action="index.php" method="POST" > 
-                    //     <input type="hidden" name="page" value="cart" />
-                    //     <input type="hidden" name="id" value="'.$product['id'].'">
-                    //     <br><button type="submit" value="submit">Voeg toe aan winkelwagen</button><br>
-                    //     </form>'.PHP_EOL;
-                    
-                    /*
-                    //Geert:Waarom url-parameters in je action? #26
-                    echo '                                        
-                        <form action="index.php?page=cart&id='.$product['id'].'" method="POST" > 
-                        <input type="hidden" name="page" value="cart" />
-                        <input type="hidden" name="id" value="'.$product['id'].'">
-                        <br><button type="submit" value="submit">Voeg toe aan winkelwagen</button><br>
-                        </form>'.PHP_EOL;                      
-                    }
-                    */
                     echo '                                        
                     <form action="index.php" method="POST" > 
                     <input type="hidden" name="page" value="cart" />

@@ -14,40 +14,51 @@ class Crud
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);//optional
     }
 
-    public function getRowByValue($sql,$value)
-
+    public function getRowByValue($sql,$parameter)
     {
+        $result=false;
         $stmt = $this->pdo->prepare($sql);
-        if($stmt==false)
+        if($stmt!==false)
         {
-            $results=false;
-
-        }
-        else
-        {
-            if($stmt->execute([$value]))
+            foreach($parameter as $key=>$value)
             {
-                $results=$stmt->fetchAll();
+                $stmt->bindValue($key,$value);
+            }
+            if($stmt->execute())
+            {
+                $result=$stmt->fetchAll();
             }
             else
             {
-                $results=false;
-            }        
+                $result = false;
+            } 
         }
-        return $results;
+        return $result; 
     }
-
-    /*
-    public function getRowByValueOld($sql,$value)
-
-    {
-        $stmt = $this->pdo->prepare($sql);//ML prepare geeft een statement terug of de waarde false
-        $stmt->execute([$value]);//Geert:Test of statement prepare is gelukt alvorens het uit te voeren! #20
-        //ML execute geeft true or false
-        $results=$stmt->fetchAll();//Geert:Test of execute gelukt is alvorens met het resultaat te gaan werken! #21
-        return $results;
-    }
-    */
+/*
+// =======================================================
+        public function getRowByValueOld($sql,$value)
+        {
+            $stmt = $this->pdo->prepare($sql);
+            if($stmt==false)
+            {
+                $results=false;
+            }
+            else
+            {
+                if($stmt->execute([$value]))
+                {
+                    $results=$stmt->fetchAll();
+                }
+                else
+                {
+                    $results=false;
+                }        
+            }
+            return $results;
+        }
+// ===========================================================
+*/
     public function getAllRows($sql)
     {
         $stmt = $this->pdo->prepare($sql);
@@ -68,17 +79,7 @@ class Crud
         }    
         return $results;
     }
-    /*
-    public function getAllRowsOld($sql)
-    {
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
-        
-        $results=$stmt->fetchAll();
-        return $results;
-    }
-    */
-
+  
     public function createRow($sql, $parameter)
     {
         $result=false;

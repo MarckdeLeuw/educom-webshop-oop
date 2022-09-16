@@ -10,19 +10,11 @@ require_once "BasicDoc.php";
 class CartDoc extends BasicDoc
 {
     protected $fieldinfo;
-    // ==========================
-    // input uit sessie is product(id en aantal)
-    // per id worden de aanvullende gegevens van de producten uit de database gehaald
-    // totaal wordt berekend
-    // ======================================
 
     public function __construct(string $title, array $data)
     {
         parent::__construct($title);
-        $this->data = $data; 
-        
-        // $this-> title= parent::$title;      
-        // ML:deze wordt toch van de parent meegekregen, waarom hier weer?
+        $this->data = $data;         
     }
 //======================================================
 // PROTECTED METHOD OVERRIDES
@@ -34,9 +26,7 @@ class CartDoc extends BasicDoc
         $this->closeTable();
         $this->total();
         $this->openForm();
-        $this->closeForm();
-       
-        // var_dump($this->data);
+        $this->closeForm();       
     }
 
     protected function openTable()
@@ -63,17 +53,13 @@ class CartDoc extends BasicDoc
         $crud = new Crud();
         $webshopModel = new WebshopModel($crud);
         $total= $webshopModel->totalPrice();
-        // var_dump($total);
         echo 'Totaalprijs is €'.$total;
     }
 
     protected function openForm($method="POST")
     {
-    // $submit_caption=$this->submit_caption;
 	echo '<main><form action="index.php" method="'.$method.'" >'.PHP_EOL
     .'		<input type="hidden" name="page" value="cart" />'.PHP_EOL;
-    // ML: let op value moet nog afhankelijk gemaakt worden van de de pagina, action ook anders?
-    // .'		<input type="hidden" name="page" value="'.$page.'" />'.PHP_EOL;
     }
 
     protected function closeForm($submit_caption="Afrekenen")
@@ -92,9 +78,6 @@ class CartDoc extends BasicDoc
             $crud = new Crud();
             $webshopModel = new WebshopModel($crud);
             $product= $webshopModel->getProductById($productInCart['id']);          
-            // echo'id='.$productInCart['id'].'<br>';
-            // echo'number='.$productInCart['number'].'<br>';
-            // var_dump($product[0]['details']);       
         echo'
         <tr>
             <td>'.$productInCart['id'].'</td> 

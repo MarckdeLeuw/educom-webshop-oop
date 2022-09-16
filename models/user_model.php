@@ -5,6 +5,22 @@ class UserModel extends BaseModel
     
     public function findUserByEmail($valueEmail)
     {
+        $sql = 'SELECT * FROM users WHERE email  = (:email) ';
+        $parameter=array(':email'=>$valueEmail);   
+        $user=$this->crud->getRowByValue($sql,$parameter);
+        if($user==null)
+        {
+            return false;
+        }else
+        {
+            return $user;
+            echo 'email is gevonden';
+        }
+    }
+/*==============================================================
+//Zie ook  getRowByValueOld($sql,$value)
+    public function findUserByEmailOld($valueEmail)
+    {
         $sql = 'SELECT * FROM users WHERE email  = ? ';//Geert:Waarom geen named placeholders gebruiken zoals in addUser? #24
         $user=$this->crud->getRowByValue($sql,$valueEmail);
         if($user==null)
@@ -15,7 +31,7 @@ class UserModel extends BaseModel
             return $user;
         }
     }
-
+==========================================================*/
     public function authenticateUser($user,$password)
     {       
         if($user[0]['wachtwoord']==$password)//Geert:Waarom $user[0] ? #23
@@ -47,8 +63,7 @@ class UserModel extends BaseModel
     {
         $sql = 'INSERT INTO users(naam, email, wachtwoord) VALUES (:naam,:email,:wachtwoord) ';
         $parameter=array(':naam'=>$name,':email'=>$email,':wachtwoord'=>$wachtwoord);   
-        $result=$this->crud->createRow($sql,$parameter);//aanpassen                      
-        // var_dump($result);
+        $result=$this->crud->createRow($sql,$parameter);                    
     }
 }
 ?>

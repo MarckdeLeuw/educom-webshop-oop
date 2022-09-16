@@ -1,10 +1,4 @@
 <?php
-/*
-Maak in de folder /views twee abstracte class files 
-FormsDoc en ProductDoc aan, 
-die overerfen van de BasicDoc en de functies bevatten die 
-de classen die hiervan overerven gemeenschappelijk hebben.
-*/
 
 require_once "BasicDoc.php";
 class ProductDoc extends BasicDoc
@@ -49,7 +43,7 @@ class ProductDoc extends BasicDoc
                     <a href="index.php?page=detail&id='
                     .$product['id']
                     .'">
-                    <li><img src="/opdracht_3.1_opzet/images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
+                    <li><img src="./images/'.$product['picture'].'.jpg" style="width:300px;height:300px;"></li>
                     <li>'.$product['name']. '</li>
                     <li>€'.$product['price'].'</li>
                     <li>Vooraad:'.$product['stock'].'</li>

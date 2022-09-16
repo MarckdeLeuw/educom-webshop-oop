@@ -5,13 +5,9 @@ class ValidateForm
     {
         $result = array();
         $result['ok']=true;
-        // return $result;
-        // echo 'validateForm wordt aangeroepn';
         foreach ($fields as $fieldName => $fieldInfo)
         {
-            // $check = $this->checkField($fieldName, $fieldInfo);
             $check = $this->checkField($fieldName, $fieldInfo);
-            // var_dump($this->check);
             if($check['ok']===true)
                 {
                     $result[$fieldName]=$check[$fieldName];
@@ -23,7 +19,6 @@ class ValidateForm
                 }
 
         }
-        // var_dump($result);
         return $result;
     }
 
@@ -48,12 +43,6 @@ class ValidateForm
             $result['ok']=true;
             }                   
         return $result;
-        // var_dump($result);
     }
-
-
-
-
-
 }
 ?>

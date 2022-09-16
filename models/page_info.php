@@ -145,7 +145,7 @@ class PageInfo
                         'title' => 'webshop'
                     );
             default:
-                echo 'No process request';              
+                // echo 'No process request';              
         }
     return $data;
     }

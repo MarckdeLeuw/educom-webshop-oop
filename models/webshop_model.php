@@ -2,18 +2,18 @@
  require_once "./models/base_model.php";
 class WebshopModel extends BaseModel
 {
-    // public function __construct(array $data)
-    // { 
-    //     $this->data = $data; 
-    // }
     public function addToCart($id)
     {
+/*
+TO DO
+in het WebshopModel->addToCart moet nog een validatie worden meegegeven 
+die controleert of het aantal items in de cart het aantal in de db niet overschrijdt
+*/
         if(isset($_SESSION['cart_products'][$id]['number']))
         {
             $numberOfProducts=$_SESSION['cart_products'][$id]['number'];
             $numberOfProducts=$numberOfProducts+1;
             $_SESSION['cart_products'][$id]['number']=$numberOfProducts;
-
         }
         else
         {
@@ -27,17 +27,11 @@ class WebshopModel extends BaseModel
     {
         if(isset($_SESSION['cart_products']))
         {
-            // var_dump($_SESSION);
             $totalPrice = 0;
             $productsInCart=$_SESSION['cart_products'];
             foreach ($productsInCart as $productInCart)
             {
                 $product=$this->getProductById($productInCart['id']);
-                
-                // echo'id='.$productInCart['id'].'<br>';
-                // echo'number='.$productInCart['number'].'<br>';
-                // echo'price='.$product[0]['price'].'<br>';
-                
                 $subTotal = $productInCart['number']*$product[0]['price'];
                 $totalPrice += $subTotal;
             }
@@ -51,8 +45,9 @@ class WebshopModel extends BaseModel
     
     public function getProductById($valueId)
     {
-        $sql = 'SELECT * FROM products WHERE id = ? ';
-        $product=$this->crud->getRowByValue($sql,$valueId);
+        $sql = 'SELECT * FROM products WHERE id  = (:id) ';
+        $parameter=array(':id'=>$valueId);   
+        $product=$this->crud->getRowByValue($sql,$parameter);
         if($product==null)
         {
             return false;
@@ -61,7 +56,22 @@ class WebshopModel extends BaseModel
             return $product;
         }
     }
+/*
+        //Zie ook  getRowByValueOld($sql,$value)
 
+        public function getProductByIdOld($valueId)
+        {
+            $sql = 'SELECT * FROM products WHERE id = ? ';
+            $product=$this->crud->getRowByValueOld($sql,$valueId);
+            if($product==null)
+            {
+                return false;
+            }else
+            {
+                return $product;
+            }
+        }
+*/
     public function getAllProducts()
     {
         $sql = 'SELECT * FROM products';

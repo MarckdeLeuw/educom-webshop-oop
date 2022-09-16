@@ -169,32 +169,30 @@ class Controller
             break;
 
             case 'cart':
-                if(isset($_GET['id']))
+                if(isset($_POST['id']))
                 {
-                    $id=$_GET['id'];
+                    $id=$_POST['id'];
                     require_once "./models/webshop_model.php";
                     $crud = new Crud();
                     $webshopModel = new WebshopModel($crud);
                     $webshopModel->addToCart($id);
                 }
-                // print_r($_SESSION);
-                
-                // var_dump($_SESSION['cart_products'][1]);
-                // var_dump($_SESSION['cart_products'][2]);
-                // var_dump($_SESSION['cart_products'][3]);
-
-
+                else
+                {
+                    if(isset($_SESSION['cart_products']))
+                    {
+                        require_once "./models/webshop_model.php";
+                        $crud = new Crud();
+                        $webshopModel = new WebshopModel($crud);
+                                                
+                        $_SESSION['orderNumber']=$webshopModel->writeToOrders();
+                        $webshopModel->createOrderDetails($_SESSION);
+                        $webshopModel->updateProductInventory($_SESSION);
+                        $_SESSION['cart_products'] = NULL;
+                        $this->response['page'] = 'home';
+                    }
+                }
             break;
-
-
-            // case 'detail':
-            //     echo 'hello';
-            //     var_dump($this->request);
-            //     var_dump($_POST['id']);
-            // break;
-            // default
-            // echo "No process request";
-
         }
 
         if ($this->request['posted'])
@@ -293,9 +291,10 @@ class Controller
             break;
 
             case 'detail':
-                $this->response['data']['page'] = 'detail';//Bij de post kan de waarde opgevangen worden
-                var_dump($this->response['data']['page']);
 
+                $this->response['data']['page'] = 'detail';//Bij de post kan de waarde opgevangen worden
+                var_dump($this->response['data']['page']);         
+                
                 // var_dump($_GET);//in principe niet met GET wreken!!
                 if (isset ($this->response['data']['id']) )
                 {
@@ -328,14 +327,13 @@ class Controller
             break;
 
             case 'cart':
+                
                 if(isset($_SESSION['cart_products']))
                 {
-                    // var_dump($_SESSION);
-                    require_once "./models/webshop_model.php";
-                    $crud = new Crud();
-                    $webshopModel = new WebshopModel($crud);
-                    $total= $webshopModel->totalPrice();
-                    var_dump($total);
+                    $data = $_SESSION;
+                    require_once "./views/CartDoc.php";
+                    $products = new CartDoc($page,$data);
+                    $products->show();  
                 }
                 else
                 {
@@ -355,14 +353,7 @@ class Controller
 
                 write to orders bij afrekenen
                 write to order details                          
-                */
-                require_once "./views/CartDoc.php";
-                require_once "./models/products_info.php";
-                $productModel = new ProductsModel();
-                $productsModel = $productModel->getProducts();
-                $products = new CartDoc($page,$productsModel);
-                $products->show();    
-
+                */                
             break;
             // ==================================================================
             

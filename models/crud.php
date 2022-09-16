@@ -93,5 +93,20 @@ class Crud
         }
         return $result;            
     }
+
+    public function updateRow($sql, $parameter)
+    {
+        $result=false;
+        $stmt = $this->pdo->prepare($sql);
+        if($stmt!==false)
+        {
+            foreach($parameter as $key=>$value)
+            {
+                $stmt->bindValue($key,$value);
+            }
+            $result=$stmt->execute(); 
+        }
+        return $result;            
+    }
 }
 ?>

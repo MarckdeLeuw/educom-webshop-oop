@@ -104,6 +104,9 @@ class DetailDoc extends BasicDoc
                     //     <input type="hidden" name="id" value="'.$product['id'].'">
                     //     <br><button type="submit" value="submit">Voeg toe aan winkelwagen</button><br>
                     //     </form>'.PHP_EOL;
+                    
+                    /*
+                    //Geert:Waarom url-parameters in je action? #26
                     echo '                                        
                         <form action="index.php?page=cart&id='.$product['id'].'" method="POST" > 
                         <input type="hidden" name="page" value="cart" />
@@ -111,6 +114,14 @@ class DetailDoc extends BasicDoc
                         <br><button type="submit" value="submit">Voeg toe aan winkelwagen</button><br>
                         </form>'.PHP_EOL;                      
                     }
+                    */
+                    echo '                                        
+                    <form action="index.php" method="POST" > 
+                    <input type="hidden" name="page" value="cart" />
+                    <input type="hidden" name="id" value="'.$product['id'].'">
+                    <br><button type="submit" value="submit">Voeg toe aan winkelwagen</button><br>
+                    </form>'.PHP_EOL;                      
+                }
                     else
                     {
                         echo '<a href="index.php?page=login">Log in om te bestellen</a>';

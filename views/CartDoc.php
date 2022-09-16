@@ -16,10 +16,10 @@ class CartDoc extends BasicDoc
     // totaal wordt berekend
     // ======================================
 
-    public function __construct(string $title, array $products)
+    public function __construct(string $title, array $data)
     {
         parent::__construct($title);
-        $this->products = $products; 
+        $this->data = $data; 
         
         // $this-> title= parent::$title;      
         // ML:deze wordt toch van de parent meegekregen, waarom hier weer?
@@ -35,6 +35,8 @@ class CartDoc extends BasicDoc
         $this->total();
         $this->openForm();
         $this->closeForm();
+       
+        // var_dump($this->data);
     }
 
     protected function openTable()
@@ -57,14 +59,19 @@ class CartDoc extends BasicDoc
 
     protected function total()
     {
-        echo 'Totaalprijs is €'/*.totalPrice()*/;
+        require_once "./models/webshop_model.php";
+        $crud = new Crud();
+        $webshopModel = new WebshopModel($crud);
+        $total= $webshopModel->totalPrice();
+        // var_dump($total);
+        echo 'Totaalprijs is €'.$total;
     }
 
     protected function openForm($method="POST")
     {
     // $submit_caption=$this->submit_caption;
 	echo '<main><form action="index.php" method="'.$method.'" >'.PHP_EOL
-    .'		<input type="hidden" name="page" value="page" />'.PHP_EOL;
+    .'		<input type="hidden" name="page" value="cart" />'.PHP_EOL;
     // ML: let op value moet nog afhankelijk gemaakt worden van de de pagina, action ook anders?
     // .'		<input type="hidden" name="page" value="'.$page.'" />'.PHP_EOL;
     }
@@ -78,17 +85,24 @@ class CartDoc extends BasicDoc
 
     protected function showProductsCart()
     {
-        // foreach($this->products as $product)
-        {
-        // var_dump($this->products);           
+        $productsInCart=$this->data['cart_products'];
+        foreach ($productsInCart as $productInCart)
+        {   
+            require_once "./models/webshop_model.php";
+            $crud = new Crud();
+            $webshopModel = new WebshopModel($crud);
+            $product= $webshopModel->getProductById($productInCart['id']);          
+            // echo'id='.$productInCart['id'].'<br>';
+            // echo'number='.$productInCart['number'].'<br>';
+            // var_dump($product[0]['details']);       
         echo'
         <tr>
-            <td>id uit session</td> 
-            <td>afbeelding ahv id product</td>
-            <td>name ahv id product</td>
-            <td>prijs ahv id product</td>
-            <td>aantal uit session</td> 
-            <td>prijs*aantal producten</td>    
+            <td>'.$productInCart['id'].'</td> 
+            <td><img src="./images/'.$product[0]['picture'].'.jpg" style="width:50px;height:50px;"></td>
+            <td>'.$product[0]['name'].'</td>
+            <td>'.$product[0]['price'].'</td>
+            <td>'.$productInCart['number'].'</td> 
+            <td>'.$productInCart['number']*$product[0]['price'].'</td>    
         </tr>';       
         }
     }
